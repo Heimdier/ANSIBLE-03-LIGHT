@@ -7,5 +7,5 @@
 - дополнил playbook плэем с установкой и настройкой LightHouse   [site.yml](https://github.com/Heimdier/ANSIBLE-03-LIGHT/blob/main/playbook/site.yml)  
 - подготовил inventory-файл [prod.yml](https://github.com/Heimdier/ANSIBLE-03-LIGHT/blob/main/playbook/inventory/prod.yml)
 - запустил линтер ansible-lint site.yml\
-
+смисичисм
   
