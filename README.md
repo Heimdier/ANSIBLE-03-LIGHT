@@ -2,52 +2,30 @@
 
 ## Описание
 
-Этот Ansible playbook предназначен для установки и настройки Clickhouse и Vector на целевых серверах. 
-
-## Предварительные требования
-
-Перед запуском playbook убедитесь, что выполнены следующие требования:
-
-- Ansible версии 2.9 или выше установлен на контроллере.
-- Управляемые узлы настроены и могут быть достигнуты через SSH.
-- Имеется доступ к интернету для загрузки пакетов.
+playbook предназначен для установки и настройки Clickhouse Vector и Lighthouse на целевых серверах. 
 
 ## Переменные
 
-- `clickhouse_version`: Версия Clickhouse, которую следует установить. Задается в playbook или в инвентори файле.
-- `clickhouse_packages`: Список пакетов Clickhouse для установки. Обычно включает `clickhouse-server`, `clickhouse-client` и `clickhouse-common-static`.
+- `clickhouse_version`: Версия Clickhouse, которую следует установить.
+- `clickhouse_packages`: Список пакетов Clickhouse для установки.
+- `vector_version`: версия vector
+- `vector_config_dir`: путь до файла конфигурации vector
+- `vector_config_file`: имя файла конфигурации vector
+- `lighthouse_code_src`: путь к репозитарию lighthouse
+- `lighthouse_data_dir`: путь к каталогу установки lighthouse
+- `lighthouse_packages`: пакеты для установки из репозитария
+- `lighthouse_nginx_port`: порт на котором lighthouse
+- `lighthouse_nginx_conf`: имя файла конфигурации
 
 ## Инструкции по установке
 
-1. **Cклонируйте репозиторий:**
+## Инструкции по установке
 
-```shell
-   git clone https://github.com/SergueiMoscow/Ansible_03.git
-   cd Ansible_03
-```
+1. **Склонируйте репозитарий**
 
 2. **Подготовьте инвентори файл:**
 
-### Docker - для тестирования и развёртывания в контейнерах в локальном окружении
-В директории `prepare_hosts_docker` запустить `docker compose up -d`. Будут созданы и запущены 3 контейнера.
-Запуск playbook в этом случае из директории playbook - `ansible-playbook -i inventory/containers.yml site.yml`
-
-### Yandex Cloud
-#### Подготовить доступ к Yandex Cloud:
-- Файл ключей сервисного аккаунта должен находиться в файле ~/.yc_authorized_key.json
-- В файле [personal.auto.tfvars](prepare_hosts_yc/personal.auto.tfvars) прописать свои значения переменных
-#### Созздать виртуальные машины
-- В директории `prepare_hosts_yc` запустить `terraform init`, затем `terraform apply`. Будут созданы 3 виртуалные машины и файл `inventory/prod.yml` в качестве inventory файла для ansible
-
-
-Проверьте целевые хосты, в файле инвентори, например [`prod.yml`]`inventory/prod.yml`:
-```yml
-clickhouse:
-  hosts:
-    clickhouse_yc:
-      ansible_host: 62.84.114.84
-      ansible_user: vm_user
-```
+Укажите целевые хосты, добавив их в файл инвентори, [`prod.yml`]`inventory/prod.yml`:
 
 
 3. **Запуск playbook:**
@@ -55,24 +33,25 @@ clickhouse:
    Выполните команду для запуска playbook:
 
 ```shell
-   ansible-playbook -i inventory.ini playbook.yml
+   ansible-playbook -i inventory/prod.yml site.yml
 ```
    
 ## Роли и задачи
 
 - **Установка Clickhouse:**
   - Скачивает необходимые пакеты.
-  - Устанавливает их с помощью `yum`.
-  - Создаёт базу данных `logs`.
+  - Устанавливает их с помощью `apt`.
+  - Создаёт базу данных.
 
 - **Установка Vector:**
-  - Загружает и запускает скрипт для добавления репозитория.
-  - Устанавливает Vector из репозитория.
-  - Создаёт и активирует systemd сервис для Vector.
+  - Скачивает необходимые пакеты.
+  - Устанавливает их с помощью `apt`.
+  - Через template накатывает конфиг для vector
 
 - **Установка Lighthouse:**
   - Загружает Lighthouse из репозитория.
   - Устанавливает и настраивает Nginx для доступа к Lighthouse
+  - Применяет шаблоны настройки через template
 
 ## Обработка ошибок
 
