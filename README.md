@@ -1,4 +1,4 @@
-# ANSIBLE-03-LIGHT
+# 08-ansible-03-yandex
 
 - подготовил три хоста для clickhouse vector и  lighthouse    
 
