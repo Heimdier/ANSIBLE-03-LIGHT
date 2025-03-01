@@ -10,7 +10,8 @@
 
 ![image](https://github.com/user-attachments/assets/62a21d63-6254-4e8f-bd16-4c4e0b16ffe9)
 ---
-- запустил плэйбук с флагом --check\
+- запустил плэйбук с флагом --check
+---
 ![image](https://github.com/user-attachments/assets/f6f6d826-3961-474e-9e8c-111fb88d6964)
 ![image](https://github.com/user-attachments/assets/c6d1dd6c-9303-4273-a0dc-f4164dd50a44)
 ---
